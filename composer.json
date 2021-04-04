@@ -1,10 +1,17 @@
 {
   "name": "semperit/minkcivicrmhelpers",
   "description": "Shared helper functions for running Mink tests against CiviCRM.",
-  "type": "drupal-module",
+  "type": "drupal-custom-module",
   "homepage": "https://www.doesntexistyet.com",
   "license": "AGPL-3.0-or-later",
   "require": {
+    "composer/installers": "~1.0",
     "drupal/core": "^8.8|^9"
+  },
+  "extra": {
+    "installer-name": "mink_civicrm_helpers",
+    "installer-paths": {
+      "web/sites/default/modules/": ["semperit/minkcivicrmhelpers"]
+    }
   }
 }

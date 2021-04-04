@@ -11,7 +11,7 @@
   "extra": {
     "installer-name": "mink_civicrm_helpers",
     "installer-paths": {
-      "web/sites/default/modules/": ["semperit/minkcivicrmhelpers"]
+      "web/sites/default/modules/{$name}": ["semperit/minkcivicrmhelpers"]
     }
   }
 }

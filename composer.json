@@ -1,0 +1,10 @@
+{
+  "name": "semperit/minkcivicrmhelpers",
+  "description": "Shared helper functions for running Mink tests against CiviCRM.",
+  "type": "drupal-module",
+  "homepage": "https://www.doesntexistyet.com",
+  "license": "AGPL-3.0-or-later",
+  "require": {
+    "drupal/core": "^8.8|^9"
+  }
+}

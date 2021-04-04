@@ -1,0 +1,5 @@
+name: Mink CiviCRM Helpers
+type: module
+description: 'Useful functions for running Mink tests with CiviCRM.'
+package: CiviCRM
+core_version_requirement: ^8.8 || ^9

@@ -32,4 +32,12 @@ trait Utils {
     $this->assertNull($civi_popups);
   }
 
+  /**
+   * Confusingly this is not BROWSER_OUTPUT_DIRECTORY but seems to be hardcoded
+   * @return string
+   */
+  protected function getBrowserOutputDirectory(): string {
+    return DRUPAL_ROOT . '/sites/simpletest/browser_output/';
+  }
+
 }

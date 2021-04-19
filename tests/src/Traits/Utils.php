@@ -6,6 +6,58 @@ namespace Drupal\Tests\mink_civicrm_helpers\Traits;
  */
 trait Utils {
 
+  protected function setUpExtension(string $key): void {
+    /**
+     * Not much point to these tests if our extension isn't installed!
+     * But you need to have set the path to the extensions dir where you're
+     * developing this extension, since it's expecting everything under
+     * the simpletest directory, but that doesn't exist yet until the tests
+     * start.
+     * Set it either in phpunit.mink.xml with <env name="DEV_EXTENSION_DIR" value="path_to_ext_folder"/>
+     * or as an environment variable if not using phpunit.mink.xml
+     */
+    if ($extdir = getenv('DEV_EXTENSION_DIR')) {
+      \Civi::settings()->set('extensionsDir', $extdir);
+      // Is there a better way to reset the extension system?
+      \CRM_Core_Config::singleton(TRUE, TRUE);
+      \CRM_Extension_System::setSingleton(new \CRM_Extension_System());
+    }
+
+    require_once 'api/api.php';
+    civicrm_api3('Extension', 'install', ['keys' => $key]);
+    // Drupal 8 is super cache-y.
+    drupal_flush_all_caches();
+
+    // Need this otherwise any new permissions aren't available yet.
+    unset(\Civi::$statics['CRM_Core_Permission']['basicPermissions']);
+
+    $this->configureCiviSettings();
+  }
+
+  /**
+   * Miscellaneous civi settings that make it harder for errors to go unseen.
+   *
+   * You can either override this function in your test if you don't want
+   * anything it does, or extend it using trait-renaming. For the latter, e.g.
+   * in your `use` statement you would do:
+   * use \Drupal\Tests\mink_civicrm_helpers\Traits\Utils {
+   *   Utils::configureCiviSettings as utilsConfigureCiviSettings;
+   * }
+   * then in your override:
+   * protected function configureCiviSettings(): void {
+   *   $this->utilsConfigureCiviSettings();
+   *   // do more stuff
+   * }
+   */
+  protected function configureCiviSettings(): void {
+    \Civi::settings()->add([
+      // turn off the popup forms because ajax hides errors
+      'ajaxPopupsEnabled' => 0,
+      // display a backtrace on screen for exceptions
+      'backtrace' => 1,
+    ]);
+  }
+
   /**
    * Asserts the page has no error messages.
    */
@@ -33,7 +85,9 @@ trait Utils {
   }
 
   /**
-   * Confusingly this is not BROWSER_OUTPUT_DIRECTORY but seems to be hardcoded
+   * Confusingly this is not BROWSER_OUTPUT_DIRECTORY but seems to be hardcoded.
+   * You can use this if you want your test to create a file that gets uploaded
+   * as a viewable artifact at the end of the tests. Put it in this folder.
    * @return string
    */
   protected function getBrowserOutputDirectory(): string {

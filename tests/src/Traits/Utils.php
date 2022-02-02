@@ -64,7 +64,7 @@ trait Utils {
   protected function assertPageHasNoErrorMessages(): void {
     $error_messages = $this->getSession()->getPage()->findAll('css', '.messages.messages--error');
     $this->assertCount(0, $error_messages, implode(', ', array_map(static function(\Behat\Mink\Element\NodeElement $el) {
-      return $el->getValue();
+      return $el->getText();
     }, $error_messages)));
 
     // Check civi status messages

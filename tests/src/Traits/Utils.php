@@ -18,6 +18,11 @@ trait Utils {
      */
     if ($extdir = getenv('DEV_EXTENSION_DIR')) {
       \Civi::settings()->set('extensionsDir', $extdir);
+    }
+    if ($exturl = getenv('DEV_EXTENSION_URL')) {
+      \Civi::settings()->set('extensionsURL', $exturl);
+    }
+    if ($extdir || $exturl) {
       // Is there a better way to reset the extension system?
       \CRM_Core_Config::singleton(TRUE, TRUE);
       \CRM_Extension_System::setSingleton(new \CRM_Extension_System());
@@ -66,7 +71,7 @@ trait Utils {
     $this->assertCount(0, $error_messages, implode(', ', array_map(static function(\Behat\Mink\Element\NodeElement $el) {
       return $el->getText();
     }, $error_messages)));
-    
+
     // Check for fatal errors. Doing it this way so that the text itself which
     // contains the stack trace is automatically output to the github action
     // log.

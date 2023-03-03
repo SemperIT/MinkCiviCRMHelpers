@@ -5,8 +5,8 @@
   "homepage": "https://www.doesntexistyet.com",
   "license": "AGPL-3.0-or-later",
   "require": {
-    "composer/installers": "~1.0",
-    "drupal/core": "^8.8|^9"
+    "composer/installers": "^1 || ^2",
+    "drupal/core": "^9|^10"
   },
   "extra": {
     "installer-name": "mink_civicrm_helpers",

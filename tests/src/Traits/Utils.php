@@ -91,7 +91,7 @@ trait Utils {
     // more comprehensive because some of these are generated purely from
     // javascript, but is tied to the css currently used by the popup.
     $civi_popups = $this->getSession()->getPage()->find('css', '.error.ui-notify-message');
-    $this->assertNull($civi_popups);
+    $this->assertNull($civi_popups, empty($civi_popups) ? '' : ('civi popup: ' . $civi_popups->getText()));
   }
 
   /**

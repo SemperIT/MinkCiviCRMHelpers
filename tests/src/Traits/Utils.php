@@ -22,8 +22,6 @@ trait Utils {
     // }
     if ($exturl = getenv('DEV_EXTENSION_URL')) {
       \Civi::settings()->set('extensionsURL', $exturl);
-    }
-    if ($extdir || $exturl) {
       // Is there a better way to reset the extension system?
       \CRM_Core_Config::singleton(TRUE, TRUE);
       \CRM_Extension_System::setSingleton(new \CRM_Extension_System());

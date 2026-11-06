@@ -20,19 +20,22 @@ trait Utils {
     // if ($extdir = getenv('DEV_EXTENSION_DIR')) {
     //   \Civi::settings()->updateConstant('extensionsDir', $extdir);
     // }
-    $extdir = getenv('DEV_EXTENSION_DIR');
+    if ($extdir = getenv('DEV_EXTENSION_DIR')) {
+      // sigh...
+      \CRM_Core_DAO::executeQuery("DELETE FROM civicrm_setting WHERE name='extensionsDir'");
+      $cid = \CRM_Core_DAO::singleValueQuery("SELECT min(id) FROM civicrm_contact");
+      \CRM_Core_DAO::executeQuery("INSERT INTO civicrm_setting (`name`, `value`, `domain_id`, `is_domain`, `created_date`, `created_id`) VALUES ('extensionsDir', %1, 1, 1, CURRENT_TIMESTAMP, %2)", [
+        1 => [\serialize($extdir), 'String'],
+        2 => [$cid, 'Integer'],
+      ]);
+    }
     if ($exturl = getenv('DEV_EXTENSION_URL')) {
       \Civi::settings()->set('extensionsURL', $exturl);
     }
     if ($extdir || $exturl) {
       // Is there a better way to reset the extension system?
       \CRM_Core_Config::singleton(TRUE, TRUE);
-      if ($extdir) {
-        \CRM_Extension_System::setSingleton(new \CRM_Extension_System(['extensionsDir' => $extdir]));
-      }
-      else {
-        \CRM_Extension_System::setSingleton(new \CRM_Extension_System());
-      }
+      \CRM_Extension_System::setSingleton(new \CRM_Extension_System());
     }
 
     require_once 'api/api.php';

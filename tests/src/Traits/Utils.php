@@ -16,9 +16,10 @@ trait Utils {
      * Set it either in phpunit.mink.xml with <env name="DEV_EXTENSION_DIR" value="path_to_ext_folder"/>
      * or as an environment variable if not using phpunit.mink.xml
      */
-    if ($extdir = getenv('DEV_EXTENSION_DIR')) {
-      \Civi::settings()->updateConstant('extensionsDir', $extdir);
-    }
+    // This doesn't work since it's too late and gets rejected. See if we can use env vars in the yml.
+    // if ($extdir = getenv('DEV_EXTENSION_DIR')) {
+    //   \Civi::settings()->updateConstant('extensionsDir', $extdir);
+    // }
     if ($exturl = getenv('DEV_EXTENSION_URL')) {
       \Civi::settings()->set('extensionsURL', $exturl);
     }

@@ -17,7 +17,7 @@ trait Utils {
      * or as an environment variable if not using phpunit.mink.xml
      */
     if ($extdir = getenv('DEV_EXTENSION_DIR')) {
-      \Civi::settings()->set('extensionsDir', $extdir);
+      \Civi::settings()->updateConstant('extensionsDir', $extdir);
     }
     if ($exturl = getenv('DEV_EXTENSION_URL')) {
       \Civi::settings()->set('extensionsURL', $exturl);
